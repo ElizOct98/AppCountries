@@ -50,11 +50,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-
+    //dependency for API
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-
     implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    //dependency for image
+    implementation(platform("androidx.compose:compose-bom:2025.02.00"))
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
 
     testImplementation(libs.junit)

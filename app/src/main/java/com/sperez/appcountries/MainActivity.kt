@@ -15,10 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.sperez.appcountries.ui.theme.AppCountriesTheme
 import com.sperez.appcountries.viewModel.CountriesViewModel
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalGlideComposeApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,8 +36,12 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         items(listCountries.value, itemContent = {
-                            Text(it.name.common)
+                            Text(it.name.common, fontSize = 20.sp)
                             Text(it.capital.first())
+                            GlideImage(
+                                model = it.image.png,
+                                contentDescription = it.name.common
+                            )
 
 
                         })
