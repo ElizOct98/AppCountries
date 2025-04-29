@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sperez.appcountries.intents.CountriesIntent
 import com.sperez.appcountries.intents.CountriesSate
-import com.sperez.appcountries.model.Country
 import com.sperez.appcountries.network.APICountriesService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -16,7 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class CountriesViewModel: ViewModel() {
 
     var currentState = mutableStateOf<CountriesSate?>(null)
-    //var countriesList = mutableStateOf<List<Country>>(emptyList())
+    var intetnts = MutableSharedFlow<CountriesIntent>()
     private val moshiConverterFactory =
         MoshiConverterFactory.create(Moshi.Builder().add(KotlinJsonAdapterFactory()).build())
 
@@ -29,7 +30,22 @@ class CountriesViewModel: ViewModel() {
     private val fields = arrayOf("name","capital","flags")
 
     init {
-        getCountries()
+
+        viewModelScope.launch {
+            intetnts.collect{
+                when(it){
+                    is CountriesIntent.GetCountries -> {
+                        getCountries()
+                    }
+                }
+            }
+        }
+    }
+
+    fun dispatchEvent(event: CountriesIntent) {
+        viewModelScope.launch {
+            intetnts.emit(event)
+        }
     }
 
     private fun getCountries() {

@@ -57,6 +57,9 @@ dependencies {
     //dependency for image
     implementation(platform("androidx.compose:compose-bom:2025.02.00"))
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    //dependency coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
 
 
     testImplementation(libs.junit)

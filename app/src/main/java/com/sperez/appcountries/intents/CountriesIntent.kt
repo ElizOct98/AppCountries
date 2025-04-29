@@ -4,7 +4,6 @@ import com.sperez.appcountries.model.Country
 
 sealed class CountriesIntent {
     object GetCountries : CountriesIntent()
-    object Refresh : CountriesIntent()
 }
 
 sealed class CountriesSate{
