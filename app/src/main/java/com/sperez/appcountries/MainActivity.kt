@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.sperez.appcountries.intents.CountriesSate
 import com.sperez.appcountries.ui.theme.AppCountriesTheme
 import com.sperez.appcountries.viewModel.CountriesViewModel
 
@@ -31,28 +32,37 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val viewModel: CountriesViewModel = viewModels<CountriesViewModel>().value
-            val listCountries = remember { viewModel.countriesList}
-
+            //val listCountries = remember { viewModel.countriesList}
+            val state = remember { viewModel.currentState }
             AppCountriesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LazyColumn(
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        items(listCountries.value, itemContent = {
-                            Row(modifier = Modifier.padding(start = 15.dp, top = 30.dp)) {
-                                GlideImage(
-                                    model = it.image.png,
-                                    contentDescription = it.name.common
-                                )
-                                Column(modifier = Modifier.padding(start = 15.dp)) {
-                                    Text(it.name.common, fontSize = 20.sp)
-                                    Text(it.capital.first())
-                                }
+                    when(val current = state.value){
+                        is CountriesSate.Loading -> {
+
+                        }
+
+                        is CountriesSate.Display -> {
+                            LazyColumn(
+                                modifier = Modifier.padding(innerPadding)
+                            ) {
+                                items(current.list, itemContent = {
+                                    Row(modifier = Modifier.padding(start = 15.dp, top = 30.dp)) {
+                                        GlideImage(
+                                            model = it.image.png,
+                                            contentDescription = it.name.common
+                                        )
+                                        Column(modifier = Modifier.padding(start = 15.dp)) {
+                                            Text(it.name.common, fontSize = 20.sp)
+                                            Text(it.capital.first())
+                                        }
+                                    }
+                                })
                             }
-
-
-                        })
+                        }
+                        is CountriesSate.Error -> {}
+                        else -> {}
                     }
+
                 }
             }
         }
