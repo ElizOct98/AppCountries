@@ -1,4 +1,4 @@
-package com.sperez.appcountries.model
+package com.sperez.appcountries.model.api
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
